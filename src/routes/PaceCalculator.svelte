@@ -20,7 +20,7 @@
   $: time = timeToSeconds(Number(hours), Number(minutes), Number(seconds));
 </script>
 
-<Card color="primary" class="mx-8 w-full sm:w-min">
+<Card color="primary" class="w-full sm:w-min">
   <div class="flex flex-col">
     <div class="mb-4">
       Time

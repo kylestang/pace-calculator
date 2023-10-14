@@ -3,7 +3,7 @@
 </script>
 
 <div>
-  <div class="flex flex-col items-center">
+  <div class="p-4 sm:p-6 flex flex-col items-center w-full">
     <h1>Run pace calculator</h1>
     <PaceCalculator />
   </div>
