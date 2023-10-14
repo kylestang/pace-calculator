@@ -38,6 +38,7 @@
           on:blur={() => {
             hours = hours.padStart(2, '0');
           }}
+          inputmode="numeric"
         />
         :
         <Input
@@ -47,6 +48,7 @@
           on:blur={() => {
             minutes = minutes.padStart(2, '0');
           }}
+          inputmode="numeric"
         />
         :
         <Input
@@ -56,6 +58,7 @@
           on:blur={() => {
             seconds = seconds.padStart(2, '0');
           }}
+          inputmode="numeric"
         />
       </div>
     </div>
@@ -63,7 +66,7 @@
     <div class="mb-4">
       Distance
       <div class="flex flex-row gap-4">
-        <Input class="w-20" bind:value={distance} />
+        <Input class="w-20" bind:value={distance} inputmode="numeric" />
         <Select class="w-20" items={distanceSelector} placeholder="" bind:value={units} />
       </div>
     </div>
