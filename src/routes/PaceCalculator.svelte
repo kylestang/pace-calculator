@@ -21,7 +21,7 @@
 
   function calculatePace(seconds: number, distance: number, units: 'km' | 'M'): string {
     if (seconds === 0 && distance === 0) {
-      return 'N/A';
+      return 'None';
     }
     if (distance == 0) {
       return (seconds / distance).toString();
@@ -34,7 +34,7 @@
 
   function calculateSpeed(seconds: number, distance: number, units: 'km' | 'M'): string {
     if (seconds === 0 && distance === 0) {
-      return 'N/A';
+      return 'None';
     }
     if (seconds === 0) {
       return (distance / seconds).toString();
@@ -114,7 +114,12 @@
           bind:value={distance}
           inputmode="numeric"
           on:input={() => {
-            distance = distance.replace(/\D/g, '');
+            let values = distance.split('.', 2);
+            values[0] = values[0].replace(/\D/g, '');
+            if (values.length === 2) {
+              values[1] = values[1].replace(/\D/g, '');
+            }
+            distance = values.join('.');
           }}
           on:focus={() => {
             if (distance === '0') {
