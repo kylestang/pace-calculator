@@ -51,6 +51,7 @@
       Time
       <div class="flex flex-row items-center">
         <Input
+          id="hours"
           class="w-10"
           placeholder=""
           bind:value={hours}
@@ -59,6 +60,9 @@
           }}
           on:input={() => {
             hours = hours.replace(/\D/g, '');
+            if (hours.length === 2) {
+              document.getElementById('minutes')?.focus();
+            }
           }}
           on:focus={() => {
             if (hours === '00') {
@@ -69,6 +73,7 @@
         />
         :
         <Input
+          id="minutes"
           class="w-10"
           placeholder=""
           bind:value={minutes}
@@ -77,6 +82,9 @@
           }}
           on:input={() => {
             minutes = minutes.replace(/\D/g, '');
+            if (minutes.length === 2) {
+              document.getElementById('seconds')?.focus();
+            }
           }}
           on:focus={() => {
             if (minutes === '00') {
@@ -87,6 +95,7 @@
         />
         :
         <Input
+          id="seconds"
           class="w-10"
           placeholder=""
           bind:value={seconds}
@@ -95,6 +104,9 @@
           }}
           on:input={() => {
             seconds = seconds.replace(/\D/g, '');
+            if (seconds.length === 2) {
+              document.getElementById('distance')?.focus();
+            }
           }}
           on:focus={() => {
             if (seconds === '00') {
@@ -110,6 +122,7 @@
       Distance
       <div class="flex flex-row gap-4">
         <Input
+          id="distance"
           class="w-20"
           bind:value={distance}
           inputmode="numeric"
