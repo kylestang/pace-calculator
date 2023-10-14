@@ -4,7 +4,7 @@
 
 <div>
   <div class="flex flex-col items-center">
-    <h1>Race pace calculator</h1>
+    <h1>Run pace calculator</h1>
     <PaceCalculator />
   </div>
 </div>

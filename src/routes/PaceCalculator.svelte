@@ -17,13 +17,7 @@
 
   let time = 0;
 
-  $: {
-    time = timeToSeconds(Number(hours), Number(minutes), Number(seconds));
-    hours = hours.replace(/\D/g, '');
-    minutes = minutes.replace(/\D/g, '');
-    seconds = seconds.replace(/\D/g, '');
-    distance = distance.replace(/\D/g, '');
-  }
+  $: time = timeToSeconds(Number(hours), Number(minutes), Number(seconds));
 </script>
 
 <Card color="primary">
@@ -38,6 +32,14 @@
           on:blur={() => {
             hours = hours.padStart(2, '0');
           }}
+          on:input={() => {
+            hours = hours.replace(/\D/g, '');
+          }}
+          on:focus={() => {
+            if (hours === '00') {
+              hours = '';
+            }
+          }}
           inputmode="numeric"
         />
         :
@@ -47,6 +49,14 @@
           bind:value={minutes}
           on:blur={() => {
             minutes = minutes.padStart(2, '0');
+          }}
+          on:input={() => {
+            minutes = minutes.replace(/\D/g, '');
+          }}
+          on:focus={() => {
+            if (minutes === '00') {
+              minutes = '';
+            }
           }}
           inputmode="numeric"
         />
@@ -58,6 +68,14 @@
           on:blur={() => {
             seconds = seconds.padStart(2, '0');
           }}
+          on:input={() => {
+            seconds = seconds.replace(/\D/g, '');
+          }}
+          on:focus={() => {
+            if (seconds === '00') {
+              seconds = '';
+            }
+          }}
           inputmode="numeric"
         />
       </div>
@@ -66,7 +84,19 @@
     <div class="mb-4">
       Distance
       <div class="flex flex-row gap-4">
-        <Input class="w-20" bind:value={distance} inputmode="numeric" />
+        <Input
+          class="w-20"
+          bind:value={distance}
+          inputmode="numeric"
+          on:input={() => {
+            distance = distance.replace(/\D/g, '');
+          }}
+          on:focus={() => {
+            if (distance === '0') {
+              distance = '';
+            }
+          }}
+        />
         <Select class="w-20" items={distanceSelector} placeholder="" bind:value={units} />
       </div>
     </div>
