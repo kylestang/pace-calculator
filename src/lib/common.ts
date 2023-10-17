@@ -20,3 +20,18 @@ export function secondsToTime(totalSeconds: number): string {
     return hours + ':' + minutes + ':' + seconds;
   }
 }
+
+export function convertUnits(input: 'km' | 'M', output: 'km' | 'M', value: number): number {
+  if (input === output) {
+    return value;
+  }
+
+  if (input === 'km' && output === 'M') {
+    return value * 0.6213712;
+  }
+  if (input === 'M' && output === 'km') {
+    return value * 1.609344;
+  }
+
+  return -1;
+}

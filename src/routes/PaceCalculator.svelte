@@ -1,10 +1,15 @@
 <script lang="ts">
-  import { secondsToTime, timeToSeconds } from '$lib/common';
+  import { convertUnits, secondsToTime, timeToSeconds } from '$lib/common';
   import { Card, Input, Select } from 'flowbite-svelte';
 
   const distanceSelector = [
     { value: 'km', name: 'km' },
     { value: 'M', name: 'M' }
+  ];
+
+  const paceSelector = [
+    { value: 'km', name: '/km' },
+    { value: 'M', name: '/M' }
   ];
 
   let hours = '00';
@@ -13,34 +18,46 @@
 
   let distance = '0';
 
-  let units: 'km' | 'M' = 'km';
+  let inputUnits: 'km' | 'M' = 'km';
+  let outputUnits: 'km' | 'M' = 'km';
 
   let time = 0;
 
   $: time = timeToSeconds(Number(hours), Number(minutes), Number(seconds));
 
-  function calculatePace(seconds: number, distance: number, units: 'km' | 'M'): string {
+  function calculatePace(
+    seconds: number,
+    distance: number,
+    inputUnits: 'km' | 'M',
+    outputUnits: 'km' | 'M'
+  ): string {
     if (seconds === 0 && distance === 0) {
       return 'None';
     }
     if (distance == 0) {
       return (seconds / distance).toString();
     }
+    distance = convertUnits(inputUnits, outputUnits, distance);
     let secondsPerDistance = seconds / distance;
     let pace = secondsToTime(secondsPerDistance);
-    let suffix = units === 'km' ? '/km' : '/M';
-    return pace + ' ' + suffix;
+    return pace;
   }
 
-  function calculateSpeed(seconds: number, distance: number, units: 'km' | 'M'): string {
+  function calculateSpeed(
+    seconds: number,
+    distance: number,
+    inputUnits: 'km' | 'M',
+    outputUnits: 'km' | 'M'
+  ): string {
     if (seconds === 0 && distance === 0) {
       return 'None';
     }
     if (seconds === 0) {
       return (distance / seconds).toString();
     }
+    distance = convertUnits(inputUnits, outputUnits, distance);
     let speed = (distance / (seconds / 3600)).toFixed(2);
-    let suffix = units === 'km' ? 'km/h' : 'MPH';
+    let suffix = outputUnits === 'km' ? 'km/h' : 'MPH';
     return speed + ' ' + suffix;
   }
 </script>
@@ -120,40 +137,45 @@
 
     <div class="mb-4">
       Distance
-      <div class="flex flex-row gap-4">
-        <Input
-          id="distance"
-          class="w-20"
-          bind:value={distance}
-          inputmode="numeric"
-          on:input={() => {
-            let values = distance.split('.', 2);
-            values[0] = values[0].replace(/\D/g, '');
-            if (values.length === 2) {
-              values[1] = values[1].replace(/\D/g, '');
-            }
-            distance = values.join('.');
-          }}
-          on:focus={() => {
-            if (distance === '0') {
-              distance = '';
-            }
-          }}
-          on:blur={() => {
-            if (distance === '') {
-              distance = '0';
-            }
-          }}
-        />
-        <Select class="w-20" items={distanceSelector} placeholder="" bind:value={units} />
+      <div class="flex flex-row gap-2">
+        <div class="">
+          <Input
+            id="distance"
+            class="w-20"
+            bind:value={distance}
+            inputmode="numeric"
+            on:input={() => {
+              let values = distance.split('.', 2);
+              values[0] = values[0].replace(/\D/g, '');
+              if (values.length === 2) {
+                values[1] = values[1].replace(/\D/g, '');
+              }
+              distance = values.join('.');
+            }}
+            on:focus={() => {
+              if (distance === '0') {
+                distance = '';
+              }
+            }}
+            on:blur={() => {
+              if (distance === '') {
+                distance = '0';
+              }
+            }}
+          />
+        </div>
+        <Select class="w-20" items={distanceSelector} placeholder="" bind:value={inputUnits} />
       </div>
     </div>
 
-    <div>
-      Pace: {calculatePace(time, Number(distance), units)}
+    <div class="flex flex-row items-center gap-2">
+      <div class="whitespace-nowrap">
+        Pace: {calculatePace(time, Number(distance), inputUnits, outputUnits)}
+      </div>
+      <Select class="w-20" items={paceSelector} placeholder="" bind:value={outputUnits} />
     </div>
-    <div>
-      Speed: {calculateSpeed(time, Number(distance), units)}
+    <div class="whitespace-nowrap">
+      Speed: {calculateSpeed(time, Number(distance), inputUnits, outputUnits)}
     </div>
   </div>
 </Card>
